@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Youtube Project 1</title> 
+	<script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript">
+    
+		var params = { allowScriptAccess: "always" };
+		var atts = { id: "myytplayer" };
+		swfobject.embedSWF("http://www.youtube.com/apiplayer?enablejsapi=1",
+					   "tubePlayer", "425", "356", "8", null, null, params, atts);
+
+		var player;
+		function onYouTubePlayerReady(id) {
+			console.log("runs");
+			player = $("#myytplayer").get(0);
+		}
+
+		$(document).ready(function(e) {
+            var url = "http://gdata.youtube.com/feeds/api/videos?max-results=20&alt=json&q=pokemon+pikachu";
+			
+			
+			var loadedData;
+			
+			$.getJSON(url, function( data ) {
+				
+				loadedData = data;
+				
+				$.each( data.feed.entry, function( key, value ) {
+					
+					var nodeUrl = value.id.$t.replace("http://gdata.youtube.com/feeds/api/videos/", "")
+					
+					$("#res").append("<p data-url='" + nodeUrl + "' >" + value.title.$t + "</p>");
+					
+					$("p").on("click", function() {
+						player.loadVideoById( $(this).data("url"), 0, "default");
+						//console.log( $(this).data("url") );
+					});
+					
+				});
+				
+			});
+			
+        });
+
+  </script>
+  
+  <form action="http://www.youtube.com/results" method="get" target="_blank">
+<input name="search_query" type="text" maxlength="128" />
+<select name="search_type">
+<option value="">Videos</option>
+<option value="search_users">Channels</option>
+</select>
+<input type="submit" value="Search" />
+</form>
+
+
+	<div id="res">
+    
+    </div> 
+  <style>
+  	div { width: 300px; float: left; }
+	p { cursor: pointer;
+  </style>
+</head>
+<body>
+
+  <div id="tubePlayer">
+    You need Flash player 8+ and JavaScript enabled to view this video.
+  </div>
+
+</body>
+</html>
