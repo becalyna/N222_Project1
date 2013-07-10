@@ -43,7 +43,7 @@
 					$("#res").append("<p data-url='" + nodeUrl + "' >" + (key + 1) + ". " + value.title.$t + "</p>");
 
 					
-					$("#youtubeplayer").on("click", function() {
+					$("p").on("click", function() {
 						player.loadVideoById( $(this).data("url"), 0, "default");
 						//console.log( $(this).data("url") );
 					});
@@ -64,11 +64,6 @@
 		</select>
 		<input type="submit" value="Search" />
 	</form>
-
-
-	<div id="res">
-    
-    	</div> 
   
   <!-- In-Document/Embedded CSS -->
   <!-- <style>
@@ -77,45 +72,44 @@
   </style> -->
   
   <!-- In-Document/Embedded CSS -->
-  <style>
-  	div { 
-		width: 300px; 
-		float: left; 
-	}
-		
-	p { 
-	cursor: pointer; 
+<style>
+
+  	body {
+	background:transparent
 	}
 	
 	#res {
 		width:400px; 
 		float:left; 
 		background:#CCC;
-		cursor:pointer;
 		padding:10px;
 		margin:10px;
 		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+		border:solid #000 2px
 	}
 		
 	#playlist {
-		width:400px; 
+		width:200px; 
 		float:left; 
-		background:#FFC;
+		background:#CCC;
 		cursor:pointer;
 		padding:10px;
 		margin:10px;
 		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+		border:solid #000 2px
 	}
 	
-	#youtubeplayer {
-		width:400px; 
-		float:right; 
+	p {
+		width:360px; 
+		float:left;
 		background:#CCC;
 		padding:10px;
 		margin:10px;
 		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+		border:solid #FF0 2px;
+		cursor:pointer
 	}
-		
+				
 </style>
   
 </head>
