@@ -37,10 +37,13 @@
 					
 					var nodeUrl = value.id.$t.replace("http://gdata.youtube.com/feeds/api/videos/", "")
 					
-					// Adding URLs
-					$("#res").append("<p data-url='" + nodeUrl + "' >" + value.title.$t + "</p>");
+					// Adding URLs, numbering
+					// $("#res").append("<p data-url='" + nodeUrl + "' >" + value.title.$t + "</p>");
+					// Added (key + 1) to display numbers on results list
+					$("#res").append("<p data-url='" + nodeUrl + "' >" + (key + 1) + ". " + value.title.$t + "</p>");
+
 					
-					$("p").on("click", function() {
+					$("#youtubeplayer").on("click", function() {
 						player.loadVideoById( $(this).data("url"), 0, "default");
 						//console.log( $(this).data("url") );
 					});
@@ -68,17 +71,68 @@
     	</div> 
   
   <!-- In-Document/Embedded CSS -->
-  <style>
+  <!-- <style>
   	div { width: 300px; float: left; }
 	p { cursor: pointer;
-  </style>
+  </style> -->
+  
+  <!-- In-Document/Embedded CSS -->
+  <style>
+  	div { 
+		width: 300px; 
+		float: left; 
+	}
+		
+	p { 
+	cursor: pointer; 
+	}
+	
+	#res {
+		width:400px; 
+		float:left; 
+		background:#CCC;
+		cursor:pointer;
+		padding:10px;
+		margin:10px;
+		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+	}
+		
+	#playlist {
+		width:400px; 
+		float:left; 
+		background:#FFC;
+		cursor:pointer;
+		padding:10px;
+		margin:10px;
+		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+	}
+	
+	#youtubeplayer {
+		width:400px; 
+		float:right; 
+		background:#CCC;
+		padding:10px;
+		margin:10px;
+		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+	}
+		
+</style>
+  
 </head>
 
 <body>
+	<!-- we need 3 divs -->
+	<div id="res">
+		SEARCH LIST RESULTS:  
+	</div> 
+    
+	<div id="playlist">
+		PLAYLIST:
+	</div>
 
-  <div id="tubePlayer">
-    You need Flash player 8+ and JavaScript enabled to view this video.
-  </div>
+	<div id="youtubeplayer">
+		You need Flash player 8+ and JavaScript enabled to view this video.
+	</div>
 
 </body>
 </html>
