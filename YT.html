@@ -55,15 +55,22 @@
         });
 
   </script>
-  
-	<form action="http://www.youtube.com/results" method="get" target="_blank">
-		<input name="search_query" type="text" maxlength="128" />
-		<select name="search_type">
-			<option value="">Videos</option>
-			<option value="search_users">Channels</option>
-		</select>
-		<input type="submit" value="Search" />
-	</form>
+  <!--Search feature-->
+  <script>
+  $(document).ready(function(e) {
+      
+      
+      $("#btnSearch").click(function() {
+        var url = "http://gdata.youtube.com/feeds/api/videos?max-results=20&alt=json&q=";
+        
+        $.getJSON(url + $("#txtSearch").val(), function (data) {
+          //your custom search results here
+        });
+      
+      });
+
+    });
+</script>
   
   <!-- In-Document/Embedded CSS -->
   <!-- <style>
@@ -127,6 +134,10 @@
 	<div id="youtubeplayer">
 		You need Flash player 8+ and JavaScript enabled to view this video.
 	</div>
+	<!-- Search Div -->
+	<div id="divA" class="col">
+      <input id="txtSearch" />
+      <input id="btnSearch" type="button" value="Search!" />
 
 </body>
 </html>
