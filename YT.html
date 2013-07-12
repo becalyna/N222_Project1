@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Youtube Project 1</title> 
 	<script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
-    	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript">
     
 		var params = { allowScriptAccess: "always" };
@@ -22,15 +22,23 @@
 			console.log("runs");
 			player = $("#myytplayer").get(0);
 		}
-
-		$(document).ready(function(e) {
-            	var url = "http://gdata.youtube.com/feeds/api/videos?max-results=20&alt=json&q=pokemon+pikachu";
-			
-			var loadedData;
-			
-			$.getJSON(url, function( data ) {
+		
+		var loadedData;
+        var url = "http://gdata.youtube.com/feeds/api/videos?max-results=20&alt=json&q=";
+		
+		// Function to populate search results in #res div
+		function listResults(url) {
+	
+			$.getJSON(url, function( data ) {	
 				
+				// Logging current url
+				console.log("url: " + url);
+				
+				// Adding JSON data to global loadedData
 				loadedData = data;
+				
+				// Clear #res div before listing results.
+				$("#res").html("");
 				
 				// Iterating over array
 				$.each( data.feed.entry, function( key, value ) {
@@ -41,7 +49,7 @@
 					// $("#res").append("<p data-url='" + nodeUrl + "' >" + value.title.$t + "</p>");
 					// Added (key + 1) to display numbers on results list
 					$("#res").append("<p data-url='" + nodeUrl + "' >" + (key + 1) + ". " + value.title.$t + "</p>");
-
+	
 					
 					$("p").on("click", function() {
 						player.loadVideoById( $(this).data("url"), 0, "default");
@@ -49,35 +57,31 @@
 					});
 					
 				});
-				
+			
 			});
 			
+		}
+		
+		// executes when docuement loads
+		$(document).ready(function(e) {
+			
+			// populate initial list	
+			listResults(url);
+			
+			// putting search function here
+			$("#btnSearch").click(function() {
+        		//var url = "http://gdata.youtube.com/feeds/api/videos?max-results=20&alt=json&q=";
+				console.log("clicked button!");
+			
+				// adding search variable to end of url and listing that result
+				listResults(url + $("#txtSearch").val());
+      
+      		});
+
         });
 
   </script>
-  <!--Search feature-->
-  <script>
-  $(document).ready(function(e) {
-      
-      
-      $("#btnSearch").click(function() {
-        var url = "http://gdata.youtube.com/feeds/api/videos?max-results=20&alt=json&q=";
         
-        $.getJSON(url + $("#txtSearch").val(), function (data) {
-          //your custom search results here
-        });
-      
-      });
-
-    });
-</script>
-  
-  <!-- In-Document/Embedded CSS -->
-  <!-- <style>
-  	div { width: 300px; float: left; }
-	p { cursor: pointer;
-  </style> -->
-  
   <!-- In-Document/Embedded CSS -->
 <style>
 
@@ -122,7 +126,13 @@
 </head>
 
 <body>
-	<!-- we need 3 divs -->
+	<!-- we need 4 divs -->
+    <!-- Search Div -->
+	<div id="divA" class="col">
+      <input id="txtSearch" />
+      <input id="btnSearch" type="button" value="Search" />
+    </div>
+   
 	<div id="res">
 		SEARCH LIST RESULTS:  
 	</div> 
@@ -131,13 +141,10 @@
 		PLAYLIST:
 	</div>
 
-	<div id="youtubeplayer">
+	<div id="tubePlayer">
 		You need Flash player 8+ and JavaScript enabled to view this video.
 	</div>
-	<!-- Search Div -->
-	<div id="divA" class="col">
-      <input id="txtSearch" />
-      <input id="btnSearch" type="button" value="Search!" />
+    
 
 </body>
 </html>
