@@ -38,26 +38,44 @@
 				loadedData = data;
 				
 				// Clear #res div before listing results.
-				$("#res").html("");
+				$("#res").html("SEARCH LIST RESULTS:");
 				
 				// Iterating over array
 				$.each( data.feed.entry, function( key, value ) {
 					
 					var nodeUrl = value.id.$t.replace("http://gdata.youtube.com/feeds/api/videos/", "")
 					
-					// Adding URLs, numbering
+					// ddding URLs, numbering
 					// $("#res").append("<p data-url='" + nodeUrl + "' >" + value.title.$t + "</p>");
-					// Added (key + 1) to display numbers on results list
-					$("#res").append("<p data-url='" + nodeUrl + "' >" + (key + 1) + ". " + value.title.$t + "</p>");
-	
+					// ddded (key + 1) to display numbers on results list
+					// ddded data-index to <p>
+					$("#res").append("<p data-index='" + key + "' data-url='" + nodeUrl + "' >" + (key + 1) + ". " + value.title.$t + "</p>");
+				
+				});
+				
+				// list clone function, moves items from results list to playlist
+				$("p").click(function() {
+					var Index = $(this).data("index");
+					var associatedData = data.feed.entry[Index].title.$t;
+						console.log(associatedData);
+					$("#playlist").append( "<div data-index='" + Index +"' class='playlistItem'>" + associatedData + "<img class='deleteItem' src='delete.png'></div>" );
 					
-					$("p").on("click", function() {
-						player.loadVideoById( $(this).data("url"), 0, "default");
+					// attaches an event listener to load the video				
+					$(".playlistItem").on("click", function() {
+						var Index = $(this).data("index");
+						var associatedData = data.feed.entry[Index].id.$t.replace("http://gdata.youtube.com/feeds/api/videos/", "");
+							console.log(associatedData);
+						player.loadVideoById(associatedData, 0, "default");
 						//console.log( $(this).data("url") );
 					});
 					
-				});
+					// click on playlist item to remove item from list
+					$(".deleteItem").on("click", function() {
+							$(this).parent().remove();
+					});
 			
+				});				
+						
 			});
 			
 		}
@@ -76,7 +94,7 @@
 				// adding search variable to end of url and listing that result
 				listResults(url + $("#txtSearch").val());
       
-      		});
+      		});			
 
         });
 
@@ -86,39 +104,61 @@
 <style>
 
   	body {
-	background:transparent
+		background:#475F43;
+	}
+	
+	img {
+		vertical-align:middle;
+		float:right;
 	}
 	
 	#res {
 		width:400px; 
 		float:left; 
-		background:#CCC;
+		background:#7A913C;
 		padding:10px;
 		margin:10px;
 		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
-		border:solid #000 2px
+		border:solid #1C4848 2px
 	}
 		
 	#playlist {
-		width:200px; 
+		width:300px; 
 		float:left; 
-		background:#CCC;
+		background:#7A913C;
 		cursor:pointer;
 		padding:10px;
 		margin:10px;
 		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
-		border:solid #000 2px
+		border:solid #1C4848 2px
 	}
 	
 	p {
 		width:360px; 
 		float:left;
-		background:#CCC;
+		background:#F0FFFF;
 		padding:10px;
 		margin:10px;
 		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
-		border:solid #FF0 2px;
+		border:solid #336060 2px;
 		cursor:pointer
+	}
+	
+	.playlistItem {
+		width:260px; 
+		background:#F0FFFF;
+		padding:10px;
+		margin:10px;
+		font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+		border:solid #475F43 2px;
+		cursor:pointer;
+		font-size:smaller;
+	}
+		
+	.text {
+		color:#F0FFFF;
+		font-family:Verdana, Geneva, sans-serif;
+		font-size:smaller;
 	}
 				
 </style>
@@ -126,15 +166,17 @@
 </head>
 
 <body>
-	<!-- we need 4 divs -->
+	<!-- we need 5 divs -->
     <!-- Search Div -->
 	<div id="divA" class="col">
       <input id="txtSearch" />
       <input id="btnSearch" type="button" value="Search" />
     </div>
+    
+    <div class="text">Please click on an item below to add it to the playlist.  Use the red delete icon to remove items from your playlist.</div>
    
 	<div id="res">
-		SEARCH LIST RESULTS:  
+		  
 	</div> 
     
 	<div id="playlist">
